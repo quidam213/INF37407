@@ -3,14 +3,25 @@ from typing import Any;
 import json;
 from pprint import pprint;
 
+URL_NAME_LAYERS = 'layers';
 COL_NAME_LAYERS = 'layers';
 
-def get_layers(url : str) -> Any:
+def get_request_pjson(url : str) -> Any:
     params : dict = {'f' : 'pjson'};
     response : requests.Response = requests.get(url=url, params=params);
     response.raise_for_status();
     data : Any = json.loads(response.text);
     return data;
+
+def manage_service(service : Any) -> None:
+    print(f"=== SERVICE: {service.get('mapName', 'N/A')} ===")
+    print(f"Description: {service.get('description', 'N/A')[:100]}...")
+    print(f"Copyright: {service.get('copyrightText', 'N/A')}")
+    print(f"SRID: {service.get('spatialReference', {}).get('wkid', 'N/A')}")
+    print(f"Unités: {service.get('units', 'N/A')}")
+    print(f"Emprise: xmin={service.get('fullExtent', {}).get('xmin', 'N/A')}, ymin={service.get('fullExtent', {}).get('ymin', 'N/A')}, xmax={service.get('fullExtent', {}).get('xmax', 'N/A')}, ymax={service.get('fullExtent', {}).get('ymax', 'N/A')}")
+    print(f"Nombre de layers: {len(service.get('layers', []))}")
+    print()
 
 def manage_layers(layers : Any) -> None:
     for l in layers[COL_NAME_LAYERS]:
@@ -22,18 +33,20 @@ def manage_layers(layers : Any) -> None:
 
 def main() -> int:
     services : list[str] = list(set([
-        "https://egisp.dfo-mpo.gc.ca/arcgis/rest/services/open_data_donnees_ouvertes/coastal_environmental_baseline_program/MapServer/layers",
-        # "https://egisp.dfo-mpo.gc.ca/arcgis/rest/services/open_data_donnees_ouvertes/underwater_vehicle_survey_musquash_mpa/MapServer/layers",
-        # "https://egisp.dfo-mpo.gc.ca/arcgis/rest/services/open_data_donnees_ouvertes/biodiversity_of_the_whelk_buccinum_dredge_survey_in_the_st_lawrence_estuary_fr/MapServer/layers",
-        # "https://egisp.dfo-mpo.gc.ca/arcgis/rest/services/open_data_donnees_ouvertes/characterization_of_the_batture_aux_alouettes_kelp_bed_in_2018_2019_fr/MapServer/layers",
-        # "https://egisp.dfo-mpo.gc.ca/arcgis/rest/services/open_data_donnees_ouvertes/inventory_macroalgae_benthic_macroinvertebrates_nshore_stlawrence_2019_fr/MapServer/layers",
-        # "https://egisp.dfo-mpo.gc.ca/arcgis/rest/services/open_data_donnees_ouvertes/coastal_biodiversity_benthic_epifauna_st_lawrence_estuary_2018_2019_fr/MapServer/layers",
-        # "https://egisp.dfo-mpo.gc.ca/arcgis/rest/services/open_data_donnees_ouvertes/saint_john_intertidal_water_level_temp_sites/MapServer/layers",
+        "https://egisp.dfo-mpo.gc.ca/arcgis/rest/services/open_data_donnees_ouvertes/coastal_environmental_baseline_program/MapServer",
+        #!! ajouter ici les autres services compatibles (arcgis + opengouv canada)
     ]));
 
     for s in services:
         try:
-            layers : Any = get_layers(s);
+            service : Any = get_request_pjson(s);
+            manage_service(service);
+            sl = '';
+            if s[-1] != '/':
+                sl = s + '/' + URL_NAME_LAYERS;
+            else:
+                sl = s + URL_NAME_LAYERS;
+            layers : Any = get_request_pjson(sl);
             print(f"Layers Ok for the service : {s}.");
             manage_layers(layers);
         except Exception as e:

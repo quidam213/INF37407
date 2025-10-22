@@ -1,4 +1,12 @@
-Layers Ok for the service : https://egisp.dfo-mpo.gc.ca/arcgis/rest/services/open_data_donnees_ouvertes/coastal_environmental_baseline_program/MapServer/layers.
+=== SERVICE: Coastal_Environmental_Baseline_Program ===
+Description: The Coastal Environmental Baseline Program is a multi-year Fisheries and Oceans Canada initiative de...
+Copyright: Government of Canada; Fisheries and Oceans Canada; Coastal Ecosystem Science Division / Gouvernement du Canada; Pêches et Océans Canada; Division des sciences des écosystèmes côtiers
+SRID: 102100
+Unités: esriMeters
+Emprise: xmin=-7382686.365599999, ymin=5644366.678599998, xmax=-7343088.909399999, ymax=5741365.805299997
+Nombre de layers: 5
+
+Layers Ok for the service : https://egisp.dfo-mpo.gc.ca/arcgis/rest/services/open_data_donnees_ouvertes/coastal_environmental_baseline_program/MapServer.
 === LAYER 0: CEBP_CTD_2019-Footprint - Empreinte ===
 Type: esriGeometryMultipoint | Display: site_name
 Champs: ['OBJECTID', 'Shape', 'decimalLatitude', 'decimalLongitude']

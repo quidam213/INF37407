@@ -3,12 +3,22 @@ from typing import Any;
 import json;
 from pprint import pprint;
 
-def get_layers(url : str) -> dict:
+COL_NAME_LAYERS = 'layers';
+
+def get_layers(url : str) -> Any:
     params : dict = {'f' : 'pjson'};
     response : requests.Response = requests.get(url=url, params=params);
     response.raise_for_status();
-    data : dict = json.loads(response.text);
+    data : Any = json.loads(response.text);
     return data;
+
+def manage_layers(layers : Any) -> None:
+    for l in layers[COL_NAME_LAYERS]:
+        print(f"=== LAYER {l.get('id', 'N/A')}: {l.get('name', 'N/A')} ===")
+        print(f"Type: {l.get('geometryType', 'N/A')} | Display: {l.get('displayField', 'N/A')}")
+        print(f"Champs: {[f['name'] for f in l.get('fields', [])]}")
+        print(f"SRID: {l.get('extent', {}).get('spatialReference', {}).get('wkid', 'N/A')}")
+        print()
 
 def main() -> int:
     services : list[str] = list(set([
@@ -23,9 +33,9 @@ def main() -> int:
 
     for s in services:
         try:
-            layers : dict = get_layers(s);
+            layers : Any = get_layers(s);
             print(f"Layers Ok for the service : {s}.");
-            pprint(layers);
+            manage_layers(layers);
         except Exception as e:
             print(f"Exception : {e} occured for the service : {s}.");
             pass

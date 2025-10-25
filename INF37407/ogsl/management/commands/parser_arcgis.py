@@ -51,11 +51,11 @@ class Command(BaseCommand):
 
         if created:
             self.stdout.write(
-                self.style.SUCCESS(f'✅ Service créé: {service.name}')
+                self.style.SUCCESS(f"✅ Service créé: {service.name}")
             );
         else:
             self.stdout.write(
-                self.style.WARNING(f'🔁 Service mis à jour: {service.name}')
+                self.style.WARNING(f"🔁 Service mis à jour: {service.name}")
             );
 
         return service;
@@ -77,7 +77,7 @@ class Command(BaseCommand):
         );
 
         action = "créé" if created else "mis à jour";
-        self.stdout.write(f'\t📁 Layer {layer.layer_id} {action}: {layer.name}');
+        self.stdout.write(f"\t📁 Layer {layer.layer_id} {action}: {layer.name}");
 
         return layer;
 
@@ -121,7 +121,7 @@ class Command(BaseCommand):
                 try:
                     layers : Any = self.get_request_pjson(sl);
                     layers_count = len(layers[self.COL_NAME_LAYERS]);
-                    self.stdout.write(f"   📂 {layers_count} layer(s) trouvé(s)");
+                    self.stdout.write(f"\t📂 {layers_count} layer(s) trouvé(s)");
 
                     for l in layers[self.COL_NAME_LAYERS]:
                         layer : Layer = self.manage_layer(l, service);
@@ -151,7 +151,7 @@ class Command(BaseCommand):
 
                         except Exception as e:
                             self.stderr.write(
-                                self.style.ERROR(f'\t\t❌ Erreur features layer {l_id}: {e}')
+                                self.style.ERROR(f"\t\t❌ Erreur features layer {l_id}: {e}")
                             );
 
                     self.stdout.write(
@@ -160,12 +160,12 @@ class Command(BaseCommand):
 
                 except Exception as e:
                     self.stderr.write(
-                        self.style.ERROR(f'\t❌ Erreur layers: {e}')
+                        self.style.ERROR(f"\t❌ Erreur layers: {e}")
                     );
 
             except Exception as e:
                 self.stderr.write(
-                    self.style.ERROR(f'❌ Erreur service: {e}')
+                    self.style.ERROR(f"❌ Erreur service: {e}")
                 );
 
         self.stdout.write(

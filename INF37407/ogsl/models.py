@@ -1,5 +1,7 @@
 from django.db import models;
 from rest_framework import serializers
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 
 class Service(models.Model):
     id = models.AutoField(primary_key=True);
@@ -26,6 +28,7 @@ class ServiceSerializer(serializers.ModelSerializer):
         fields = ("id", "url", "name", "description", "short_description", "copyright_text", "spatial_reference", "full_extent", "created_at");
 
 class Layer(models.Model):
+    id = models.AutoField(primary_key=True);
     service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='layers');
     layer_id = models.IntegerField();
     name = models.CharField(max_length=255);
@@ -49,6 +52,7 @@ class Layer(models.Model):
         ordering = ['service', 'layer_id'];
 
 class Feature(models.Model):
+    id = models.AutoField(primary_key=True);
     layer = models.ForeignKey(Layer, on_delete=models.CASCADE, related_name='features');
     object_id = models.IntegerField();
     site_name = models.CharField(max_length=255, blank=True);
@@ -79,3 +83,33 @@ class Feature(models.Model):
             models.Index(fields=['layer', 'object_id']),
             models.Index(fields=['site_name']),
         ];
+
+class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=True);
+
+    class Meta:
+        model = User;
+        fields = ('username', 'password', 'email', 'first_name', 'last_name');
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data.get('email', ''),
+            first_name=validated_data.get('first_name', ''),
+            last_name=validated_data.get('last_name', ''),
+            password=validated_data['password']
+        );
+        return user;
+
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField(required=True);
+    password = serializers.CharField(required=True, write_only=True);
+
+    def validate(self, data):
+        user = authenticate(username=data['username'], password=data['password']);
+        if not user:
+            raise serializers.ValidationError("Invalid credentials");
+        return data;
+
+class TokenResponseSerializer(serializers.Serializer):
+    token = serializers.CharField();

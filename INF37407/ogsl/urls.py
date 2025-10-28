@@ -4,9 +4,9 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
     openapi.Info(
-        title = "Un titre",
+        title = "OGSL REST API",
         default_version = "v1.0",
-        description = "Une petite description",
+        description = " OGSL REST API est une partie du tp 1 du cours d'inforoute avec Mr Yaddaden à l'UQAR.",
     ),
     public =True,
 )

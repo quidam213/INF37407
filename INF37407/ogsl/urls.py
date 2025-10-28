@@ -1,16 +1,19 @@
-##
-## EPITECH PROJECT, 2025
-## INF37407
-## File description:
-## urls.py
-##
+from django.urls import path, include
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
 
-from django.urls import path
-from ogsl.views import root, param, converter, convertResult
+schema_view = get_schema_view(
+    openapi.Info(
+        title = "Un titre",
+        default_version = "v1.0",
+        description = "Une petite description",
+    ),
+    public =True,
+)
 
 urlpatterns = [
-    path('', root),
-    path('param/<str:test>', param),
-    path('converter', converter),
-    path('converter/<str:optInitial>/<int:nInitial>', convertResult)
+    path ("/swagger", schema_view.with_ui("swagger", cache_timeout=0), name="schema - swagger - ui"),
+    path('/services', include('ogsl.services.urls')),
+    path('/layers', include('ogsl.layers.urls')),
+    path('/features', include('ogsl.features.urls'))
 ]

@@ -1,6 +1,8 @@
 from django.db import models;
+from rest_framework import serializers
 
 class Service(models.Model):
+    id = models.AutoField(primary_key=True);
     url = models.URLField(unique=True, max_length=500);
     name = models.CharField(max_length=255, blank=True);
     description = models.TextField(blank=True);
@@ -17,6 +19,11 @@ class Service(models.Model):
         db_table = 'arcgis_services';
         verbose_name = 'Service ArcGIS';
         verbose_name_plural = 'Services ArcGIS';
+
+class ServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Service;
+        fields = ("id", "url", "name", "description", "short_description", "copyright_text", "spatial_reference", "full_extent", "created_at");
 
 class Layer(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='layers');

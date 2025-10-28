@@ -25,30 +25,20 @@ def register(request : Any) -> Response:
 
 @swagger_auto_schema(method='post', request_body=LoginSerializer, responses={200: TokenResponseSerializer, 401: INVALID_CREDENTIALS})
 @api_view(['POST'])
-def login(request : Any) -> Response:
-    try:
-        username : str = request.data.get('username');
-        password : str = request.data.get('password');
-        if not username or not password:
-            return Response(INVALID_CREDENTIALS, status=status.HTTP_400_BAD_REQUEST);
-        user : AbstractUser = authenticate(username=username, password=password);
-        if user is not None:
-            refresh : RefreshToken = RefreshToken.for_user(user);
-            token : str = str(refresh.access_token);
-            return Response({'token': token}, status=status.HTTP_200_OK);
-        return Response(INVALID_CREDENTIALS, status=status.HTTP_401_UNAUTHORIZED);
-    except Exception as e:
-        return Response(INVALID_CREDENTIALS, status=status.HTTP_400_BAD_REQUEST);
+def login(request):
+    user : AbstractUser = authenticate(username=request.data['username'], password=request.data['password']);
+    if not user:
+        return Response(INVALID_CREDENTIALS, status=401);
+    refresh : RefreshToken = RefreshToken.for_user(user);
+    serializer : TokenResponseSerializer = TokenResponseSerializer({
+        'refresh': str(refresh),
+        'access': str(refresh.access_token)
+    });
+    return Response(serializer.data, status=status.HTTP_201_CREATED);
 
 @swagger_auto_schema(method='post', responses={200: LOGOUT_OK}, security=[{'Bearer': []}])
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def logout(request : Any) -> Response:
-    try:
-        refresh_token : str = request.auth;
-        if refresh_token:
-            token : RefreshToken = RefreshToken(refresh_token);
-            token.blacklist();
-        return Response(LOGOUT_OK, status=status.HTTP_200_OK);
-    except Exception as e:
-        return Response(LOGOUT_OK, status=status.HTTP_200_OK);
+    print('Authorization header:', request.headers.get('Authorization'))
+    return Response(LOGOUT_OK, status=status.HTTP_200_OK);

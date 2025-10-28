@@ -112,4 +112,5 @@ class LoginSerializer(serializers.Serializer):
         return data;
 
 class TokenResponseSerializer(serializers.Serializer):
-    token = serializers.CharField();
+    refresh : str = serializers.CharField();
+    access : str = serializers.CharField();

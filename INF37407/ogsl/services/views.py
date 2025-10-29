@@ -15,7 +15,7 @@ SERVICE_CREATED_SUCCESSFULLY : str = "Service created successfully";
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_all_services(request : Any) -> Response:
-    services = Service.objects.all();
+    services : Any = Service.objects.all();
     services_serializer : ServiceSerializer = ServiceSerializer(services, many=True);
     return Response(services_serializer.data, status=status.HTTP_200_OK);
 
@@ -23,7 +23,7 @@ def get_all_services(request : Any) -> Response:
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_service_by_id(request : Any, service_id : int) -> Response:
-    service = Service.objects.filter(id=service_id);
+    service : Service = Service.objects.filter(id=service_id);
     if not service.exists():
         return Response(SERVICE_NOT_FOUND, status=status.HTTP_404_NOT_FOUND);
     service_serializer : ServiceSerializer = ServiceSerializer(service, many=True);
@@ -33,7 +33,7 @@ def get_service_by_id(request : Any, service_id : int) -> Response:
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def delete_service_by_id(request : Any, service_id : int) -> Response:
-    service = Service.objects.filter(id=service_id);
+    service : Service = Service.objects.filter(id=service_id);
     if not service.exists():
         return Response(SERVICE_DELETED_SUCCESSFULLY, status=status.HTTP_404_NOT_FOUND);
     service.delete();
@@ -43,7 +43,7 @@ def delete_service_by_id(request : Any, service_id : int) -> Response:
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
 def patch_service_by_id(request : Any, service_id : int) -> Response:
-    service = Service.objects.filter(id=service_id).first();
+    service : Service = Service.objects.filter(id=service_id).first();
     if not service:
         return Response(SERVICE_NOT_FOUND, status=status.HTTP_404_NOT_FOUND);
     serializer = ServiceSerializer(instance=service, data=request.data, partial=True);
@@ -56,7 +56,7 @@ def patch_service_by_id(request : Any, service_id : int) -> Response:
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def post_service(request : Any) -> Response:
-    serializer = ServiceSerializer(data=request.data);
+    serializer : ServiceSerializer = ServiceSerializer(data=request.data);
     if serializer.is_valid():
         serializer.save();
         return Response(SERVICE_CREATED_SUCCESSFULLY, status=status.HTTP_201_CREATED);

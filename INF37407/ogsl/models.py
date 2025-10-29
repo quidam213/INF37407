@@ -25,7 +25,17 @@ class Service(models.Model):
 class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service;
-        fields = ("id", "url", "name", "description", "short_description", "copyright_text", "spatial_reference", "full_extent", "created_at");
+        fields = (
+            "id",
+            "url",
+            "name",
+            "description",
+            "short_description",
+            "copyright_text",
+            "spatial_reference",
+            "full_extent",
+            "created_at"
+        );
 
 class Layer(models.Model):
     id = models.AutoField(primary_key=True);
@@ -50,6 +60,24 @@ class Layer(models.Model):
         verbose_name_plural = 'Layers ArcGIS';
         unique_together = ['service', 'layer_id'];
         ordering = ['service', 'layer_id'];
+
+class LayerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Layer;
+        fields = (
+            "id",
+            "service",
+            "layer_id",
+            "name",
+            "display_name",
+            "description",
+            "geometry_type",
+            "display_field",
+            "spatial_reference",
+            "extent",
+            "fields_definition",
+            "created_at"
+        );
 
 class Feature(models.Model):
     id = models.AutoField(primary_key=True);
@@ -117,3 +145,6 @@ class TokenResponseSerializer(serializers.Serializer):
 
 class RefreshTokenParameterSerializer(serializers.Serializer):
     refresh : str = serializers.CharField(required=True);
+
+class ServiceIdParameterSerializer(serializers.Serializer):
+    service_id : int = serializers.IntegerField(required=True);

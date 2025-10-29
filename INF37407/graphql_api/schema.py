@@ -23,23 +23,24 @@ class Query(graphene.ObjectType):
     all_features = graphene.List(FeatureType)
 
     def resolve_all_services(root, info):
-        return Service.objects.all().order_by('-created_at')
+        return Service.objects.all()
 
     def resolve_all_layers(root, info):
-        return Layer.objects.all().order_by('-created_at')
+        return Layer.objects.all()
 
     def resolve_all_features(root, info):
-        return Feature.objects.all().order_by('-created_at')
+        return Feature.objects.all()
 
 class CreateService(graphene.Mutation):
     class Arguments:
         name = graphene.String(required=True)
-        description = graphene.String()
+        url = graphene.String(required=True)
+        description = graphene.String(required=False)
 
     service = graphene.Field(ServiceType)
 
-    def mutate(self, info, name, description=None):
-        service = Service(name=name, description=description)
+    def mutate(self, info, name, url, description=None):
+        service = Service(name=name, url=url, description=description)
         service.save()
         return CreateService(service=service)
 
@@ -50,12 +51,15 @@ class DeleteService(graphene.Mutation):
     ok = graphene.Boolean()
 
     def mutate(self, info, id):
-        service = Service.objects.get(pk=id)
-        service.delete()
-        return DeleteService(ok=True)
+        try:
+            service = Service.objects.get(pk=id)
+            service.delete()
+            return DeleteService(ok=True)
+        except Service.DoesNotExist:
+            return DeleteService(ok=False)
 
 class Mutation(graphene.ObjectType):
     create_service = CreateService.Field()
     delete_service = DeleteService.Field()
 
-schema = graphene.Schema(query=Query)
+schema = graphene.Schema(query=Query, mutation=Mutation)

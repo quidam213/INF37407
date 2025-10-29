@@ -6,13 +6,15 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import TokenError
 from drf_yasg.utils import swagger_auto_schema
-from ..models import UserSerializer, LoginSerializer, TokenResponseSerializer
+from ..models import UserSerializer, LoginSerializer, TokenResponseSerializer, RefreshTokenParameterSerializer
 from django.contrib.auth.models import AbstractUser
 
-REGISTER_OK : str = "You have been registered successfully"
-LOGOUT_OK : str = "Logout successful"
-INVALID_CREDENTIALS : str = "Invalid credentials"
+REGISTER_OK : str = "You have been registered successfully";
+LOGOUT_OK : str = "Logout successful";
+INVALID_CREDENTIALS : str = "Invalid credentials";
+LOGOUT_BAD_TOKEN : str = "Invalid refresh token entered";
 
 @swagger_auto_schema(method='post', request_body=UserSerializer, responses={201 : REGISTER_OK})
 @api_view(['POST'])
@@ -36,9 +38,15 @@ def login(request):
     });
     return Response(serializer.data, status=status.HTTP_201_CREATED);
 
-@swagger_auto_schema(method='post', responses={200: LOGOUT_OK}, security=[{'Bearer': []}])
+@swagger_auto_schema(method='post', request_body=RefreshTokenParameterSerializer, responses={200: LOGOUT_OK})
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
 def logout(request : Any) -> Response:
-    print('Authorization header:', request.headers.get('Authorization'))
-    return Response(LOGOUT_OK, status=status.HTTP_200_OK);
+    serializer : RefreshTokenParameterSerializer = RefreshTokenParameterSerializer(data=request.data);
+    if not serializer.is_valid():
+        return Response(LOGOUT_BAD_TOKEN, status=status.HTTP_400_BAD_REQUEST);
+    try:
+        refresh_token: RefreshToken = RefreshToken(serializer.validated_data["refresh"]);
+        refresh_token.blacklist();
+        return Response(LOGOUT_OK, status=status.HTTP_200_OK);
+    except TokenError:
+        return Response(LOGOUT_BAD_TOKEN, status=status.HTTP_400_BAD_REQUEST);

@@ -42,7 +42,10 @@ INSTALLED_APPS = [
     'ogsl.apps.OgslConfig',
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'drf_yasg',
+    'graphene_django',
+    'graphql_api.apps.GraphqlApiConfig',
 ]
 
 MIDDLEWARE = [

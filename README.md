@@ -2,12 +2,12 @@
 # TP-1
 
 ### Description
-This project is a school project from our INF37407 - Technologies de l'inforoute by PhD. Yacine Yaddaden at UQAR (Université du Québec à Rimouski), QC, Canada.
+This project is a school project from our INF37407 - Technologies de l'inforoute class by PhD. Yacine Yaddaden at UQAR (Université du Québec à Rimouski), QC, Canada.
 
 The goal of this project is to discover the django framework to build a Rest API and a GraphQL API, both alimented by a MySQL database (our choice here) and populated by canadian government free access data of their arcgis API, retrieve by a parser.
 
 ### Requirements
-All requirements needed is Python (3.14.0) and the packages listed in `requirements.txt`.
+All requirements needed is MySQL, Python (3.14.0) and the packages listed in `requirements.txt`.
 
 ### Installation
 1. Clone and access the repository

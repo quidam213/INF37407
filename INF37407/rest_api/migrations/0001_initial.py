@@ -45,7 +45,7 @@ class Migration(migrations.Migration):
                 ('extent', models.JSONField(blank=True, default=dict)),
                 ('fields_definition', models.JSONField(blank=True, default=list)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('service', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='layers', to='ogsl.service')),
+                ('service', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='layers', to='rest_api.service')),
             ],
             options={
                 'verbose_name': 'Layer ArcGIS',
@@ -65,7 +65,7 @@ class Migration(migrations.Migration):
                 ('geometry_data', models.JSONField(blank=True, default=dict)),
                 ('attributes', models.JSONField(blank=True, default=dict)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('layer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='features', to='ogsl.layer')),
+                ('layer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='features', to='rest_api.layer')),
             ],
             options={
                 'verbose_name': 'Feature ArcGIS',

@@ -2,7 +2,7 @@ import requests;
 from typing import Any;
 import json;
 from django.core.management.base import BaseCommand;
-from ogsl.models import Service, Layer, Feature;
+from rest_api.models import Service, Layer, Feature;
 
 class Command(BaseCommand):
     URL_NAME_LAYERS = 'layers';

@@ -1,6 +1,6 @@
 from graphene_django import DjangoObjectType
 import graphene
-from ogsl.models import Service, Layer, Feature
+from rest_api.models import Service, Layer, Feature
 
 class ServiceType(DjangoObjectType):
     class Meta:

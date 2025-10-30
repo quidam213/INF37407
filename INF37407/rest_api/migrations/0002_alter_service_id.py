@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('ogsl', '0001_initial'),
+        ('rest_api', '0001_initial'),
     ]
 
     operations = [

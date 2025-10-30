@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ogsl.apps.OgslConfig',
+    'rest_api.apps.RestApiConfig',
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
@@ -84,7 +84,7 @@ WSGI_APPLICATION = 'INF37407.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ogsl',
+        'NAME': 'INF37407',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',

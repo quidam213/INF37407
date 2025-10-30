@@ -36,7 +36,7 @@ All requirements needed is Python (3.14.0) and the packages listed in `requireme
     ```
 7. Create a django admin account to be able to access the admin page.
     ```bash
-    django-admin createsuperuser
+    python /path/to/manage.py createsuperuser
     ```
 8. Start the server:
     ```bash
@@ -47,9 +47,9 @@ All requirements needed is Python (3.14.0) and the packages listed in `requireme
 ### Usage
 - Obtain an access token by registering or logging in.
 - Create, read, update, and delete resources using the REST API or GraphQL interface.
-- Follow the API documentation at `http://localhost:8000/ogsl/swagger` for REST endpoints.
-- Access the GraphQL interface at `http://localhost:8000/ogsl/graphql/`.
-- Access the Django panel admin at `http://localhost:8000/ogsl/admin`.
+- Follow the API documentation at `http://localhost:8000/api/swagger` for REST endpoints.
+- Access the GraphQL interface at `http://localhost:8000/graphql/`.
+- Access the Django panel admin at `http://localhost:8000/admin`.
 
 ### Authors
 - Adam Benzidane

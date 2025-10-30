@@ -112,6 +112,20 @@ class Feature(models.Model):
             models.Index(fields=['site_name']),
         ];
 
+class FeatureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Feature;
+        fields = (
+            "id",
+            "layer",
+            "object_id",
+            "site_name",
+            "geometry_type",
+            "geometry_data",
+            "attributes",
+            "created_at"
+        );
+
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True);
 
@@ -148,3 +162,6 @@ class RefreshTokenParameterSerializer(serializers.Serializer):
 
 class ServiceIdParameterSerializer(serializers.Serializer):
     service_id : int = serializers.IntegerField(required=True);
+
+class LayerIdParameterSerializer(serializers.Serializer):
+    layer_id : int = serializers.IntegerField(required=True);

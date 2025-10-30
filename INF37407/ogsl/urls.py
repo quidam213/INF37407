@@ -12,9 +12,9 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path ("/swagger", schema_view.with_ui("swagger", cache_timeout=0), name="schema - swagger - ui"),
-    path('/auth', include('ogsl.auth.urls')),
-    path('/services', include('ogsl.services.urls')),
-    path('/layers', include('ogsl.layers.urls')),
-    path('/features', include('ogsl.features.urls'))
+    path ('swagger/', schema_view.with_ui("swagger", cache_timeout=0), name="schema - swagger - ui"),
+    path('auth/', include('ogsl.auth.urls')),
+    path('services/', include('ogsl.services.urls')),
+    path('layers/', include('ogsl.layers.urls')),
+    path('features/', include('ogsl.features.urls'))
 ]

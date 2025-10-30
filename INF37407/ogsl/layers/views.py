@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from ..models import Service, ServiceSerializer, Layer, LayerSerializer, ServiceIdParameterSerializer
+from ..models import Service, Layer, LayerSerializer, ServiceIdParameterSerializer
 from drf_yasg.utils import swagger_auto_schema
 from django.shortcuts import get_object_or_404, get_list_or_404
 
@@ -41,7 +41,7 @@ def delete_layer_by_id(request : Any, layer_id : int) -> Response:
 @permission_classes([IsAuthenticated])
 def patch_layer_by_id(request : Any, layer_id : int) -> Response:
     layer : Layer = get_object_or_404(Layer, id=layer_id);
-    serializer = LayerSerializer(instance=layer, data=request.data, partial=True);
+    serializer : LayerSerializer = LayerSerializer(instance=layer, data=request.data, partial=True);
     if serializer.is_valid():
         serializer.save();
         return Response(LAYER_UPDATED_SUCCESSFULLY, status=status.HTTP_200_OK);
@@ -51,7 +51,7 @@ def patch_layer_by_id(request : Any, layer_id : int) -> Response:
 @api_view(['post'])
 @permission_classes([IsAuthenticated])
 def post_layer(request : Any) -> Response:
-    serializer = LayerSerializer(data=request.data);
+    serializer : LayerSerializer = LayerSerializer(data=request.data);
     if serializer.is_valid():
         serializer.save();
         return Response(LAYER_CREATED_SUCCESSFULLY, status=status.HTTP_200_OK);

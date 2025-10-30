@@ -1,2 +1,6 @@
 django
 djangorestframework-simplejwt
+mysqlclient
+drf_yasg
+djangorestframework
+graphene-django

@@ -1,6 +1,8 @@
-django
-djangorestframework-simplejwt
+Django==5.2.7
+djangorestframework==3.16.1
+djangorestframework_simplejwt==5.5.1
+drf_yasg==1.21.11
+graphene==3.4.3
+graphene_django==3.2.3
+Requests==2.32.5
 mysqlclient
-drf_yasg
-djangorestframework
-graphene-django

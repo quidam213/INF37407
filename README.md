@@ -44,12 +44,26 @@ All requirements needed is MySQL, Python (3.14.0) and the packages listed in `re
     ```
 9. Access the application at `http://localhost:8000/` (you can change the default port in the `settings.py`).
 
+### Deployment
+To deploy django we need to use a web server to ensure the quality of our project.
+At this point we used previously the command `runserver` with the django `manage.py` file that would run a simple server to dev.
+Now we will use Uvicorn that runs ASGI project, an asynchrous web server that support python and ideal for django (we could also use WSGI but it is not asynchrous).
+
+To run it :
+```bash
+    python -m uvicorn INF37407.asgi:application
+```
+You can also add the --reload flag to reload when you change a file but since this is meant to be deployed it is not ideal to dev on that.
+
+If you want to maximize the app, you can use Gunicorn + Uvicorn but we won't.
+
 ### Usage
 - Obtain an access token by registering or logging in.
 - Create, read, update, and delete resources using the REST API or GraphQL interface.
 - Follow the API documentation at `http://localhost:8000/api/swagger` for REST endpoints.
 - Access the GraphQL interface at `http://localhost:8000/graphql/`.
 - Access the Django panel admin at `http://localhost:8000/admin`.
+- View usage statistics at `http://localhost:8000/admin/stats/` (admin access required).
 
 ### Authors
 - Adam Benzidane

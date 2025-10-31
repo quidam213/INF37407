@@ -24,7 +24,7 @@ All requirements needed is MySQL, Python (3.14.0) and the packages listed in `re
    ```bash
    pip install -r requirements.txt
    ```
-4. Set up the MySQL database and update the `settings.py` file with your database credentials.
+4. Set up the MySQL database and create a `.env` file, you can take a look at the `.env.example` to see what is intented.
 5. Run migrations:
     ```bash
     python /path/to/manage.py makemigrations

@@ -5,10 +5,10 @@ from django.core.management.base import BaseCommand;
 from rest_api.models import Service, Layer, Feature;
 
 class Command(BaseCommand):
-    URL_NAME_LAYERS = 'layers';
-    COL_NAME_LAYERS = 'layers';
-    URL_NAME_QUERY = 'query';
-    COL_NAME_FEATURES = 'features';
+    URL_NAME_LAYERS : str = 'layers';
+    COL_NAME_LAYERS : str = 'layers';
+    URL_NAME_QUERY : str = 'query';
+    COL_NAME_FEATURES : str = 'features';
 
     services : list[str] = list(set([
         "https://egisp.dfo-mpo.gc.ca/arcgis/rest/services/open_data_donnees_ouvertes/coastal_environmental_baseline_program/MapServer",
@@ -76,7 +76,7 @@ class Command(BaseCommand):
             }
         );
 
-        action = "créé" if created else "mis à jour";
+        action : str = "créé" if created else "mis à jour";
         self.stdout.write(f"\t📁 Layer {layer.layer_id} {action}: {layer.name}");
 
         return layer;

@@ -1,0 +1,58 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<div class="container mt-4">
+  <h1 class="mb-4">{{ title }}</h1>
+
+  <div class="row text-center mb-4">
+    <div class="col-md-4">
+      <div class="card shadow-sm p-3">
+        <h5>Services</h5>
+        <p class="display-6">{{ services_count }}</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm p-3">
+        <h5>Layers</h5>
+        <p class="display-6">{{ layers_count }}</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm p-3">
+        <h5>Features</h5>
+        <p class="display-6">{{ features_count }}</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Répartition par Service</h3>
+  <table class="table table-striped">
+    <thead><tr><th>Service</th><th>Nombre de Features</th></tr></thead>
+    <tbody>
+      {% for s in features_by_service %}
+        <tr><td>{{ s.layer__service__name }}</td><td>{{ s.total }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h3>Répartition par Type de Géométrie</h3>
+  <table class="table table-striped">
+    <thead><tr><th>Type</th><th>Nombre</th></tr></thead>
+    <tbody>
+      {% for g in features_by_geom %}
+        <tr><td>{{ g.geometry_type }}</td><td>{{ g.total }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h3>Tendances temporelles</h3>
+  <table class="table table-hover">
+    <thead><tr><th>Date</th><th>Total</th></tr></thead>
+    <tbody>
+      {% for d in features_by_date %}
+        <tr><td>{{ d.day }}</td><td>{{ d.total }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

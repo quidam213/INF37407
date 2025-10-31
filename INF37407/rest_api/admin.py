@@ -1,6 +1,8 @@
 from django.contrib import admin;
 from .models import Service, Layer, Feature;
 from django.contrib.auth.models import User
+from django.urls import path;
+from . import admin_views;
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
@@ -32,3 +34,22 @@ class FeatureAdmin(admin.ModelAdmin):
     def longitude(self, obj):
         return obj.longitude;
     longitude.short_description = 'Longitude';
+
+
+class CustomAdminSite(admin.AdminSite):
+    site_header = "Administration"
+    site_title = "Tableau de bord"
+    index_title = "Statistiques et gestion"
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path('stats/', self.admin_view(admin_views.stats_view), name='stats'),
+        ]
+        return custom_urls + urls
+
+admin.site = CustomAdminSite(name='custom_admin')
+
+admin.site.register(Service, ServiceAdmin)
+admin.site.register(Layer, LayerAdmin)
+admin.site.register(Feature, FeatureAdmin)

@@ -2,3 +2,4 @@
 set -e
 
 pip install -r ../requirements.txt
+./pre-deploy.sh

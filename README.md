@@ -51,11 +51,11 @@ Now we will use Uvicorn that runs ASGI project, an asynchrous web server that su
 
 To run it, do the following command in the directory of `manage.py`:
 ```bash
-    python -m uvicorn INF37407.asgi:application
+    python -m uvicorn INF37407.asgi:application --host [HOST] --port [PORT]
 ```
 You can also add the --reload flag to reload when you change a file but since this is meant to be deployed it is not ideal to dev on that.
 
-If you want to maximize the app, you can use Gunicorn + Uvicorn but we won't.
+If you want to maximize the app, you can use Gunicorn + Uvicorn but we won't here.
 
 ### Usage
 - Obtain an access token by registering or logging in.

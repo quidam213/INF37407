@@ -1,6 +1,7 @@
 from django.contrib import admin;
 from .models import Service, Layer, Feature;
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
+from django.contrib.auth.admin import UserAdmin, GroupAdmin
 from django.urls import path;
 from . import admin_views;
 
@@ -49,6 +50,9 @@ class CustomAdminSite(admin.AdminSite):
         return custom_urls + urls
 
 admin.site = CustomAdminSite(name='custom_admin')
+
+admin.site.register(User, UserAdmin)
+admin.site.register(Group, GroupAdmin)
 
 admin.site.register(Service, ServiceAdmin)
 admin.site.register(Layer, LayerAdmin)

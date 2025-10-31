@@ -49,7 +49,7 @@ To deploy django we need to use a web server to ensure the quality of our projec
 At this point we used previously the command `runserver` with the django `manage.py` file that would run a simple server to dev.
 Now we will use Uvicorn that runs ASGI project, an asynchrous web server that support python and ideal for django (we could also use WSGI but it is not asynchrous).
 
-To run it :
+To run it, do the following command in the directory of `manage.py`:
 ```bash
     python -m uvicorn INF37407.asgi:application
 ```

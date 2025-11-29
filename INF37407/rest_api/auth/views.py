@@ -40,6 +40,7 @@ def login(request):
 
 @swagger_auto_schema(method='post', request_body=RefreshTokenParameterSerializer, responses={200: LOGOUT_OK})
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def logout(request : Any) -> Response:
     serializer : RefreshTokenParameterSerializer = RefreshTokenParameterSerializer(data=request.data);
     if not serializer.is_valid():
@@ -50,3 +51,31 @@ def logout(request : Any) -> Response:
         return Response(LOGOUT_OK, status=status.HTTP_200_OK);
     except TokenError:
         return Response(LOGOUT_BAD_TOKEN, status=status.HTTP_400_BAD_REQUEST);
+
+
+@swagger_auto_schema(method='get', responses={200: UserSerializer})
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_profile(request: Any) -> Response:
+    """Retrieve current authenticated user profile."""
+    user = request.user
+    serializer = UserSerializer(user)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@swagger_auto_schema(method='patch', request_body=UserSerializer, responses={200: UserSerializer, 400: 'Bad Request'})
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+def patch_profile(request: Any) -> Response:
+    """Partially update current authenticated user profile."""
+    user = request.user
+    data = dict(request.data)
+    pwd = data.pop('password', None)
+    serializer = UserSerializer(instance=user, data=data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        if pwd:
+            user.set_password(pwd)
+            user.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

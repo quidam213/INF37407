@@ -6,6 +6,7 @@ graphene==3.4.3
 graphene_django==3.2.3
 python-dotenv==1.2.1
 Requests==2.32.5
-mysqlclient
+#mysqlclient
 uvicorn
 whitenoise
+django-cors-headers==4.0.0

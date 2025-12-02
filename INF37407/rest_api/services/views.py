@@ -19,14 +19,14 @@ def get_all_services(request : Any) -> Response:
     services_serializer : ServiceSerializer = ServiceSerializer(services, many=True);
     return Response(services_serializer.data, status=status.HTTP_200_OK);
 
-@swagger_auto_schema(method='get', security=[{'Bearer': []}], responses={200 : ServiceSerializer(many=True), 404 : SERVICE_NOT_FOUND})
+@swagger_auto_schema(method='get', security=[{'Bearer': []}], responses={200 : ServiceSerializer(), 404 : SERVICE_NOT_FOUND})
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_service_by_id(request : Any, service_id : int) -> Response:
-    service : Service = Service.objects.filter(id=service_id);
-    if not service.exists():
+    service : Service = Service.objects.filter(id=service_id).first();
+    if not service:
         return Response(SERVICE_NOT_FOUND, status=status.HTTP_404_NOT_FOUND);
-    service_serializer : ServiceSerializer = ServiceSerializer(service, many=True);
+    service_serializer : ServiceSerializer = ServiceSerializer(service);
     return Response(service_serializer.data, status=status.HTTP_200_OK);
 
 @swagger_auto_schema(method='delete', security=[{'Bearer': []}], responses={200 : SERVICE_DELETED_SUCCESSFULLY, 404 : SERVICE_NOT_FOUND})
